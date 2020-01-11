@@ -17,6 +17,7 @@ class AddActivity : AppCompatActivity() {
             val phone = phone.text.toString()
             val email = email.text.toString()
 
+
             val db = DBHelper(this)
 
             val person = Person(0, name, phone, email)
