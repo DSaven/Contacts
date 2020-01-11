@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +30,12 @@ class MainActivity : AppCompatActivity() {
 
         buttonAdd.setOnClickListener {
             val intent = Intent(this, AddActivity::class.java)
+            startActivity(intent)
+        }
+
+        listView.setOnItemClickListener{ parent, view, position, id ->
+            val intent = Intent(this, InfoActivity::class.java)
+            intent.putExtra("id", personList[position].id)
             startActivity(intent)
         }
     }
