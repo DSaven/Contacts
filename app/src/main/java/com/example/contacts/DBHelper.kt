@@ -59,10 +59,11 @@ class DBHelper(context: Context?)
             cursor.moveToFirst()
 
             do {
+                val id = cursor.getInt(0)
                 val name = cursor.getString(1)
                 val phone = cursor.getString(2)
                 val email = cursor.getString(3)
-                val person = Person(name, phone, email)
+                val person = Person(id , name, phone, email)
                 personList.add(person)
             } while (cursor.moveToNext())
 
@@ -83,6 +84,7 @@ class DBHelper(context: Context?)
 
         if (cursor.moveToFirst()) {
             cursor.moveToFirst()
+            person.id = cursor.getInt(0)
             person.name = cursor.getString(1)
             person.phone = cursor.getString(2)
             person.email = cursor.getString(3)

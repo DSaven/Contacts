@@ -9,7 +9,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import java.io.Serializable
 
-data class Person(var name: String = "", var phone: String = "", var email: String = "")
+data class Person(var id: Int = 0, var name: String = "", var phone: String = "", var email: String = "")
 
 class PersonAdapter(private val context: Context, private val dataSource: ArrayList<Person>): BaseAdapter() {
 
