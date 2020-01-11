@@ -1,8 +1,10 @@
 package com.example.contacts
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.provider.ContactsContract
 
 abstract class DBHelper(context: Context?, factory: SQLiteDatabase.CursorFactory)
     : SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -33,4 +35,76 @@ abstract class DBHelper(context: Context?, factory: SQLiteDatabase.CursorFactory
         onCreate(db)
     }
 
+    fun addContact(person: Person) {
+        val values = ContentValues()
+        values.put(COLUMN_NAME, person.name)
+        values.put(COLUMN_PHONE, person.phone)
+        values.put(COLUMN_EMAIL, person.email)
+
+        val db = this.writableDatabase
+
+        db.insert(TABLE_CONTACTS, null, values)
+        db.close()
+    }
+
+    fun getAll() : ArrayList<Person> {
+        val personList = ArrayList<Person>()
+        val query = "SELECT * FROM $TABLE_CONTACTS"
+
+        val db = this.writableDatabase
+
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst()
+
+            do {
+                val name = cursor.getString(1)
+                val phone = cursor.getString(2)
+                val email = cursor.getString(3)
+                val person = Person(name, phone, email)
+                personList.add(person)
+            } while (cursor.moveToNext())
+
+            cursor.close()
+        }
+
+        db.close()
+        return personList
+    }
+
+    fun findPersonById(personId: String) :Person {
+        val person = Person()
+
+        val query = "SELECT * FROM $TABLE_CONTACTS WHERE $COLUMN_ID = \"$personId\""
+
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor.moveToFirst()) {
+            cursor.moveToFirst()
+            person.name = cursor.getString(1)
+            person.phone = cursor.getString(2)
+            person.email = cursor.getString(3)
+            cursor.close()
+        }
+        db.close()
+        return person
+    }
+
+    fun updatePersonById(personId: String, person: Person) {
+        val db = this.writableDatabase
+        val values = ContentValues()
+        values.put(COLUMN_NAME, person.name)
+        values.put(COLUMN_PHONE, person.phone)
+        values.put(COLUMN_EMAIL, person.email)
+
+        db.update(TABLE_CONTACTS, values, "$COLUMN_ID = $personId", null)
+        db.close()
+    }
+
+    fun deletePersonById(personId: String) {
+        val db = this.writableDatabase
+        db.delete(TABLE_CONTACTS, "$COLUMN_ID = $personId", null)
+    }
 }
