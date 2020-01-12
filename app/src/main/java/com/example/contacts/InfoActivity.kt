@@ -24,7 +24,6 @@ class InfoActivity: AppCompatActivity() {
         btnSave.setOnClickListener {
 
             val personToSave = Person()
-
             personToSave.name = name.text.toString()
             personToSave.phone = phone.text.toString()
             personToSave.email = email.text.toString()
