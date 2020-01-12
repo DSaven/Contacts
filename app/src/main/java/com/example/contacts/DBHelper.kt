@@ -74,7 +74,7 @@ class DBHelper(context: Context?)
         return personList
     }
 
-    fun findPersonById(personId: String) :Person {
+    fun findPersonById(personId: Int) :Person {
         val person = Person()
 
         val query = "SELECT * FROM $TABLE_CONTACTS WHERE $COLUMN_ID = \"$personId\""
@@ -94,7 +94,7 @@ class DBHelper(context: Context?)
         return person
     }
 
-    fun updatePersonById(personId: String, person: Person) {
+    fun updatePersonById(personId: Int, person: Person) {
         val db = this.writableDatabase
         val values = ContentValues()
         values.put(COLUMN_NAME, person.name)
@@ -105,7 +105,7 @@ class DBHelper(context: Context?)
         db.close()
     }
 
-    fun deletePersonById(personId: String) {
+    fun deletePersonById(personId: Int) {
         val db = this.writableDatabase
         db.delete(TABLE_CONTACTS, "$COLUMN_ID = $personId", null)
     }
